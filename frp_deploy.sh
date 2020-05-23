@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#Check if git is installed.
+type git
+if [ $? != 0 ]; then 
+echo "git is required for installation, exit."
+exit 1
+fi
 #Set flags for hot update.
 
 frps_FLAG=`ps -ef |grep -w frps|grep -v grep|wc -l`
@@ -53,9 +59,9 @@ cd /tmp
  echo "Unpacking......"
  tar xzf frp_${FRP_VERSION}_linux_${ARCH}.tar.gz
  echo "Installing binary files......"
- cp ./frp_${FRP_VERSION}_linux_${ARCH}/frps /usr/bin && chmod +x /usr/bin/frps
- cp ./frp_${FRP_VERSION}_linux_${ARCH}/frpc /usr/bin && chmod +x /usr/bin/frpc
- setcap cap_net_bind_service=ep /usr/bin/frps #Give frps binary access to well-known ports(smbd,NetBIOS,etc).
+ cp ./frp_${FRP_VERSION}_linux_${ARCH}/frps /usr/local/bin && chmod +x /usr/local/bin/frps
+ cp ./frp_${FRP_VERSION}_linux_${ARCH}/frpc /usr/local/bin && chmod +x /usr/local/bin/frpc
+ setcap cap_net_bind_service=ep /usr/local/bin/frps #Give frps binary access to well-known ports(smbd,NetBIOS,etc).
  echo "Installing configuration files......"
  test -e /etc/frp/frpc.ini && echo "Configuration files exist. Do not copy templetes." || (echo "Configuration files do not exist. Copy templetes." && cp ./frp_${FRP_VERSION}_linux_${ARCH}/frp*.ini /etc/frp)
  echo "Configuration file is installed to /etc/frp ."
